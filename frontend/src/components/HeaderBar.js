@@ -3,15 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 
 const HeaderBar = () => {
   const navigate = useNavigate();
+  const isLoggedIn = !!localStorage.getItem("token");
 
   const handleLogout = () => {
-    // Clear auth token (adjust to your authentication method)
     localStorage.removeItem("token");
     navigate("/login");
   };
+
   return (
     <header className="bg-blue-600 text-white shadow-md">
-      <div className="container mx-auto flex items-center justify-between px-6 py-3">
+      <div className="container mx-auto flex flex-wrap items-center justify-between px-6 py-3">
         {/* Logo / App Name */}
         <Link
           to="/"
@@ -34,33 +35,54 @@ const HeaderBar = () => {
               />
             </svg>
           </div>
-
-          {/* App Name */}
           <span className="text-2xl font-bold tracking-wide">
             Profile<span className="text-yellow-300">Manager</span>
           </span>
         </Link>
 
-        {/* Navigation Links */}
-        <nav className="flex space-x-6">
-          <Link to="/" className="hover:text-gray-300">
-            Home
-          </Link>
-          <Link to="/profiles" className="hover:text-gray-300">
-            Profiles
-          </Link>
-          <Link to="/create-profile" className="hover:text-gray-300">
-            Create Profile
-          </Link>
+        {/* Navigation */}
+        <nav className="flex space-x-6 items-center">
+          {isLoggedIn ? (
+            <>
+              <Link to="/" className="hover:text-gray-300">
+                Home
+              </Link>
+              <Link to="/profiles" className="hover:text-gray-300">
+                Profiles
+              </Link>
+              <Link to="/create-profile" className="hover:text-gray-300">
+                Create Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/about" className="hover:text-gray-300">
+                About Us
+              </Link>
+              <Link to="/features" className="hover:text-gray-300">
+                Features
+              </Link>
+              <Link
+                to="/login"
+                className="bg-white text-blue-600 px-4 py-2 rounded font-semibold hover:bg-gray-200 transition"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-yellow-400 text-blue-900 px-4 py-2 rounded font-semibold hover:bg-yellow-300 transition"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </nav>
-
-        {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-        >
-          Logout
-        </button>
       </div>
     </header>
   );
