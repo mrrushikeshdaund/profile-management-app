@@ -1,21 +1,43 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { loginUserApi } from "../features/auth/authApi";
+import Toast from "../components/ToastMessage";
+import Loader from "../components/Loader";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    const loginData = {
+      user_id: email,
+      password: password,
+    };
 
-    // Example: Validate credentials (replace with API call)
-    if (email === "admin@example.com" && password === "password") {
-      localStorage.setItem("token", "dummy-jwt-token");
-      navigate("/");
+    const loginUserResponse = await loginUserApi(loginData);
+    if (loginUserResponse.status === 200) {
+      localStorage.setItem("token", loginUserResponse.data.token);
+      setToast({
+        message: "Login successful!",
+        type: "success",
+      });
+      setEmail("");
+      setPassword("");
+      navigate("/dashboard");
     } else {
-      alert("Invalid email or password!");
+      setToast({
+        message: "Login failed. Please check your credentials.",
+        type: "error",
+      });
     }
+
+    console.log("Login Data:", loginUserResponse);
+    setLoading(false);
   };
 
   return (
@@ -75,6 +97,8 @@ const LoginPage = () => {
           </Link>
         </p>
       </div>
+      {loading && <Loader />}
+      {toast && <Toast message={toast.message} type={toast.type} />}
     </div>
   );
 };

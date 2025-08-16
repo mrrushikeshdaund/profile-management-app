@@ -1,4 +1,4 @@
-from service.user_service import create_user_table, get_user_table,insert_user,get_all_users
+from service.user_service import create_user_table, get_user_table,insert_user,get_all_users,login_user
 from fastapi import APIRouter
 
 
@@ -36,4 +36,12 @@ def fetch_all_users():
     Endpoint to retrieve all users from the Users table.
     """
     response = get_all_users()
+    return response
+
+@router.post("/login")
+def login_user_check(user_data: dict):
+    """
+    Endpoint to login a user by checking user_id and password.
+    """
+    response =  login_user(user_data["user_id"], user_data["password"])
     return response

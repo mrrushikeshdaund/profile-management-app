@@ -62,3 +62,20 @@ def get_all_users():
     except Exception as e:
         logging.error(f"Error retrieving users: {e}")
         return {'error': str(e)}
+    
+
+def login_user(user_id: str, password: str):
+    """
+    Login a user by checking user_id and password.
+    """
+    table = dynamodb.Table('Users')
+    try:
+        response = table.get_item(Key={'user_id': user_id})
+        user = response.get('Item')
+        if user and user.get('password') == password:
+            return {'message': 'Login successful', 'user': user}
+        else:
+            return {'message': 'Invalid credentials'}
+    except Exception as e:
+        logging.error(f"Error logging in user: {e}")
+        return {'error': str(e)}
