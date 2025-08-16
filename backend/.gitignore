@@ -4,5 +4,7 @@ models/__pycache__
 routers/__pycache__
 service/__pycache__
 
+venv
+
 
 .env

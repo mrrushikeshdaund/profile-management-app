@@ -11,7 +11,7 @@ const HeaderBar = () => {
   };
 
   return (
-    <header className="bg-blue-600 text-white shadow-md">
+    <header className="fixed top-0 left-0 w-full bg-blue-600 text-white shadow-md z-50">
       <div className="container mx-auto flex flex-wrap items-center justify-between px-6 py-3">
         {/* Logo / App Name */}
         <Link
