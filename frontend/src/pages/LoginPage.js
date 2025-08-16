@@ -35,7 +35,6 @@ const LoginPage = () => {
         type: "error",
       });
     }
-    navigate("/dashboard");
 
     console.log("Login Data:", loginUserResponse);
     setLoading(false);
